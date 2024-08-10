@@ -3,8 +3,16 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-// THREE JS
+// Script
+const home = document.querySelector('.home-page')
+const collectionButton = document.getElementById('collection-button')
 
+collectionButton.addEventListener('click', () => {
+    console.log(home)
+    home.scrollIntoView({ behavior: 'smooth' })
+})
+
+// THREE JS
 /**
  * SCENE SETUP
  */
@@ -43,7 +51,7 @@ let mixer = null
 gltfLoader.load('jiku.glb', (gltf) => {
     mixer = new THREE.AnimationMixer(gltf.scene)
     const tailAnimation = mixer.clipAction(gltf.animations[0])
-    tailAnimation.play()
+    // tailAnimation.play()
 
     const rig = gltf.scene.children.find((child) => {
         return child.name === 'rig'
