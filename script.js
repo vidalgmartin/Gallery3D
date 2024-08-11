@@ -3,25 +3,26 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-// Script
-const home = document.querySelector('.home-page')
+const canvas = document.querySelector('canvas.webgl')
 const collectionButton = document.getElementById('collection-button')
 
+// Ensures that the page starts at the top on refresh.
+window.onbeforeunload = () => {
+    window.scrollTo(0, 0)
+}
+
 collectionButton.addEventListener('click', () => {
-    console.log(home)
-    home.scrollIntoView({ behavior: 'smooth' })
+    canvas.scrollIntoView({ behavior: 'smooth' })
 })
 
 // THREE JS
 /**
  * SCENE SETUP
  */
-const canvas = document.querySelector('canvas.webgl')
-
 const scene = new THREE.Scene()
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-camera.position.set(0, 1.5, 5)
+camera.position.set(1.5, 3, 6)
 
 const controls = new OrbitControls(camera, canvas)
 
