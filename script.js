@@ -7,9 +7,9 @@ const canvas = document.querySelector('canvas.webgl')
 const collectionButton = document.getElementById('collection-button')
 
 // Ensures that the page starts at the top on refresh.
-window.onbeforeunload = () => {
-    window.scrollTo(0, 0)
-}
+// window.onbeforeunload = () => {
+//     window.scrollTo(0, 0)
+// }
 
 collectionButton.addEventListener('click', () => {
     canvas.scrollIntoView({ behavior: 'smooth' })
@@ -22,9 +22,13 @@ collectionButton.addEventListener('click', () => {
 const scene = new THREE.Scene()
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-camera.position.set(1.5, 3, 6)
+camera.position.set(1.5, 3.5, 6)
 
 const controls = new OrbitControls(camera, canvas)
+controls.maxPolarAngle = 1.5
+controls.maxDistance = 8
+controls.minDistance = 5
+controls.enablePan = false
 
 /**
  * 3D MODEL
