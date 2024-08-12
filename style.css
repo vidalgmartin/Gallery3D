@@ -8,3 +8,15 @@
     width: 100vw;
     height: 100vh;
 }
+
+.experience-interface {
+    position: absolute;
+    color: white;
+    z-index: 200;
+
+    border: 1px solid red;
+}
+
+.webgl {
+    z-index: 100;
+}

@@ -4,12 +4,13 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 const canvas = document.querySelector('canvas.webgl')
-const collectionButton = document.getElementById('collection-button')
+const collectionButton = document.getElementById('collection-btn')
+const animationButton = document.getElementById('animation-btn')
 
 // Ensures that the page starts at the top on refresh.
-// window.onbeforeunload = () => {
-//     window.scrollTo(0, 0)
-// }
+window.onbeforeunload = () => {
+    window.scrollTo(0, 0)
+}
 
 collectionButton.addEventListener('click', () => {
     canvas.scrollIntoView({ behavior: 'smooth' })
@@ -20,9 +21,10 @@ collectionButton.addEventListener('click', () => {
  * SCENE SETUP
  */
 const scene = new THREE.Scene()
+scene.position.set(0, -1, 0)
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-camera.position.set(1.5, 3.5, 6)
+camera.position.set(1.5, 2, 5)
 
 const controls = new OrbitControls(camera, canvas)
 controls.maxPolarAngle = 1.5
@@ -56,7 +58,13 @@ let mixer = null
 gltfLoader.load('jiku.glb', (gltf) => {
     mixer = new THREE.AnimationMixer(gltf.scene)
     const tailAnimation = mixer.clipAction(gltf.animations[0])
-    // tailAnimation.play()
+    tailAnimation.repetitions = 3
+
+    animationButton.addEventListener('click', () => { 
+        tailAnimation.play()
+        // resets animation from previous animation so it's able to play again
+        tailAnimation.reset()
+    })
 
     const rig = gltf.scene.children.find((child) => {
         return child.name === 'rig'
