@@ -8,9 +8,9 @@ const collectionButton = document.getElementById('collection-btn')
 const animationButton = document.getElementById('animation-btn')
 
 // Ensures that the page starts at the top on refresh.
-window.onbeforeunload = () => {
-    window.scrollTo(0, 0)
-}
+// window.onbeforeunload = () => {
+//     window.scrollTo(0, 0)
+// }
 
 collectionButton.addEventListener('click', () => {
     canvas.scrollIntoView({ behavior: 'smooth' })
@@ -27,10 +27,10 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 camera.position.set(1.5, 2, 5)
 
 const controls = new OrbitControls(camera, canvas)
+controls.enablePan = false
 controls.maxPolarAngle = 1.5
 controls.maxDistance = 8
 controls.minDistance = 5
-controls.enablePan = false
 
 /**
  * 3D MODEL
@@ -44,8 +44,8 @@ dracoLoader.setDecoderPath('draco/')
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
 
-// material
-const jikuTexture = textureLoader.load('baked.jpg')
+// materials
+const jikuTexture = textureLoader.load('donutBake.jpg')
 jikuTexture.flipY = false
 jikuTexture.colorSpace = THREE.SRGBColorSpace
 
@@ -55,32 +55,41 @@ const jikuMaterial = new THREE.MeshBasicMaterial({ map: jikuTexture })
 let mixer = null
 
 // mesh
-gltfLoader.load('jiku.glb', (gltf) => {
-    mixer = new THREE.AnimationMixer(gltf.scene)
-    const tailAnimation = mixer.clipAction(gltf.animations[0])
-    tailAnimation.repetitions = 3
+// gltfLoader.load('jiku.glb', (gltf) => {
+//     mixer = new THREE.AnimationMixer(gltf.scene)
+//     const tailAnimation = mixer.clipAction(gltf.animations[0])
+//     tailAnimation.repetitions = 3
 
-    animationButton.addEventListener('click', () => { 
-        tailAnimation.play()
-        // resets animation from previous animation so it's able to play again
-        tailAnimation.reset()
-    })
+//     animationButton.addEventListener('click', () => { 
+//         tailAnimation.play()
+//         // resets animation from previous action so it's able to play again
+//         tailAnimation.reset()
+//     })
 
-    const rig = gltf.scene.children.find((child) => {
-        return child.name === 'rig'
-    })
-    const jikuMesh = rig.children[0]
-    jikuMesh.material = jikuMaterial
+//     const rig = gltf.scene.children.find((child) => {
+//         return child.name === 'rig'
+//     })
+//     const jikuMesh = rig.children[0]
+//     jikuMesh.material = jikuMaterial
 
-    const flatGrassMesh = gltf.scene.children.find((child) => {
-        return child.name === 'flatGrass'
-    })
-    flatGrassMesh.material = jikuMaterial
+//     const flatGrassMesh = gltf.scene.children.find((child) => {
+//         return child.name === 'flatGrass'
+//     })
+//     flatGrassMesh.material = jikuMaterial
 
-    const longGrassMesh = gltf.scene.children.find((child) => {
-        return child.name === 'longGrass'
+//     const longGrassMesh = gltf.scene.children.find((child) => {
+//         return child.name === 'longGrass'
+//     })
+//     longGrassMesh.material = jikuMaterial
+
+//     scene.add(gltf.scene)
+// })
+
+gltfLoader.load('donut.glb', (gltf) => {
+    gltf.scene.traverse((child) => {
+        child.material = jikuMaterial
+        console.log(child)
     })
-    longGrassMesh.material = jikuMaterial
 
     scene.add(gltf.scene)
 })
