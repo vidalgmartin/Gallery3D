@@ -6,11 +6,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 const canvas = document.querySelector('canvas.webgl')
 const collectionButton = document.getElementById('collection-btn')
 const animationButton = document.getElementById('animation-btn')
+const jikuModelButton = document.getElementById('jiku-model')
+const donutModelButton = document.getElementById('donut-model')
 
 // Ensures that the page starts at the top on refresh.
-// window.onbeforeunload = () => {
-//     window.scrollTo(0, 0)
-// }
+window.onbeforeunload = () => {
+    window.scrollTo(0, 0)
+}
 
 collectionButton.addEventListener('click', () => {
     canvas.scrollIntoView({ behavior: 'smooth' })
@@ -18,7 +20,7 @@ collectionButton.addEventListener('click', () => {
 
 // THREE JS
 /**
- * SCENE SETUP
+ * SCENE SETUP & UTILS
  */
 const scene = new THREE.Scene()
 scene.position.set(0, -1, 0)
@@ -32,9 +34,6 @@ controls.maxPolarAngle = 1.5
 controls.maxDistance = 8
 controls.minDistance = 5
 
-/**
- * 3D MODEL
- */
 // loaders
 const textureLoader = new THREE.TextureLoader()
 
@@ -44,54 +43,70 @@ dracoLoader.setDecoderPath('draco/')
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
 
-// materials
-const jikuTexture = textureLoader.load('donutBake.jpg')
+// default mixer value to prevent scoping issues while animating
+let mixer = null
+
+/**
+ * 3D MODELS
+ */
+// Jiku model
+const jikuTexture = textureLoader.load('jikuBake.jpg')
 jikuTexture.flipY = false
 jikuTexture.colorSpace = THREE.SRGBColorSpace
 
 const jikuMaterial = new THREE.MeshBasicMaterial({ map: jikuTexture })
 
-// default mixer value to prevent scoping issues while animating
-let mixer = null
+jikuModelButton.addEventListener('click', () => {
+    scene.clear()
 
-// mesh
-// gltfLoader.load('jiku.glb', (gltf) => {
-//     mixer = new THREE.AnimationMixer(gltf.scene)
-//     const tailAnimation = mixer.clipAction(gltf.animations[0])
-//     tailAnimation.repetitions = 3
-
-//     animationButton.addEventListener('click', () => { 
-//         tailAnimation.play()
-//         // resets animation from previous action so it's able to play again
-//         tailAnimation.reset()
-//     })
-
-//     const rig = gltf.scene.children.find((child) => {
-//         return child.name === 'rig'
-//     })
-//     const jikuMesh = rig.children[0]
-//     jikuMesh.material = jikuMaterial
-
-//     const flatGrassMesh = gltf.scene.children.find((child) => {
-//         return child.name === 'flatGrass'
-//     })
-//     flatGrassMesh.material = jikuMaterial
-
-//     const longGrassMesh = gltf.scene.children.find((child) => {
-//         return child.name === 'longGrass'
-//     })
-//     longGrassMesh.material = jikuMaterial
-
-//     scene.add(gltf.scene)
-// })
-
-gltfLoader.load('donut.glb', (gltf) => {
-    gltf.scene.traverse((child) => {
-        child.material = jikuMaterial
-        console.log(child)
+    gltfLoader.load('jiku.glb', (gltf) => {
+        mixer = new THREE.AnimationMixer(gltf.scene)
+        const tailAnimation = mixer.clipAction(gltf.animations[0])
+        tailAnimation.repetitions = 3
+    
+        animationButton.addEventListener('click', () => { 
+            tailAnimation.play()
+            // resets animation from previous action so it's able to play again
+            tailAnimation.reset()
+        })
+    
+        const rig = gltf.scene.children.find((child) => {
+            return child.name === 'rig'
+        })
+        const jikuMesh = rig.children[0]
+        jikuMesh.material = jikuMaterial
+    
+        const flatGrassMesh = gltf.scene.children.find((child) => {
+            return child.name === 'flatGrass'
+        })
+        flatGrassMesh.material = jikuMaterial
+    
+        const longGrassMesh = gltf.scene.children.find((child) => {
+            return child.name === 'longGrass'
+        })
+        longGrassMesh.material = jikuMaterial
+    
+        scene.add(gltf.scene)
     })
+})
 
-    scene.add(gltf.scene)
+// Donut model
+const donutTexture = textureLoader.load('donutBake.jpg')
+donutTexture.flipY = false
+donutTexture.colorSpace = THREE.SRGBColorSpace
+
+const donutMaterial = new THREE.MeshBasicMaterial({ map: donutTexture })
+
+donutModelButton.addEventListener('click', () => {
+    scene.clear()
+
+    gltfLoader.load('donut.glb', (gltf) => {
+        gltf.scene.traverse((child) => {
+            child.material = donutMaterial
+        })
+    
+        scene.add(gltf.scene)
+    })
 })
 
 /**
