@@ -1,10 +1,10 @@
-import { Experience } from './experience/Experience'
+import { Donut } from './experience/models/Donut'
 
 const canvas = document.querySelector('canvas.webgl')
 const collectionButton = document.getElementById('collection-btn')
 
 // initialize experience
-Experience(canvas)
+const donut = new Donut(canvas)
 
 // Ensures that the page starts at the top on refresh.
 window.onbeforeunload = () => {

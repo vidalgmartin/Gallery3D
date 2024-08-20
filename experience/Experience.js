@@ -3,137 +3,69 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-// function elements
-const animationButton = document.getElementById('animation-btn')
+export class Experience {
+    constructor(canvas) {
+        // scene setup & utils
+        this.canvas = canvas
 
-// model elements
-const jikuModelButton = document.getElementById('jiku-model')
-const donutModelButton = document.getElementById('donut-model')
+        this.scene = new THREE.Scene()
+        this.scene.position.set(0, -1, 0)
 
-export function Experience(canvas) {
-    // scene setup & utils
-    const scene = new THREE.Scene()
-    scene.position.set(0, -1, 0)
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+        this.camera.position.set(1.5, 2, 5)
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-    camera.position.set(1.5, 2, 5)
+        this.controls = new OrbitControls(this.camera, this.canvas)
+        this.controls.enablePan = false
+        this.controls.maxPolarAngle = 1.5
+        this.controls.maxDistance = 8
+        this.controls.minDistance = 5
 
-    const controls = new OrbitControls(camera, canvas)
-    controls.enablePan = false
-    controls.maxPolarAngle = 1.5
-    controls.maxDistance = 8
-    controls.minDistance = 5
+        // loaders
+        this.textureLoader = new THREE.TextureLoader()
 
-    // loaders
-    const textureLoader = new THREE.TextureLoader()
+        this.dracoLoader = new DRACOLoader()
+        this.dracoLoader.setDecoderPath('draco/')
 
-    const dracoLoader = new DRACOLoader()
-    dracoLoader.setDecoderPath('draco/')
+        this.gltfLoader = new GLTFLoader()
+        this.gltfLoader.setDRACOLoader(this.dracoLoader)
 
-    const gltfLoader = new GLTFLoader()
-    gltfLoader.setDRACOLoader(dracoLoader)
-
-    // default mixer value to prevent scoping issues while animating
-    let mixer = null
-
-    /**
-     * 3D MODELS
-     */
-    // Jiku model
-    const jikuTexture = textureLoader.load('jikuBake.jpg')
-    jikuTexture.flipY = false
-    jikuTexture.colorSpace = THREE.SRGBColorSpace
-
-    const jikuMaterial = new THREE.MeshBasicMaterial({ map: jikuTexture })
-
-    jikuModelButton.addEventListener('click', () => {
-        scene.clear()
-
-        gltfLoader.load('jiku.glb', (gltf) => {
-            mixer = new THREE.AnimationMixer(gltf.scene)
-            const tailAnimation = mixer.clipAction(gltf.animations[0])
-            tailAnimation.repetitions = 3
-        
-            animationButton.addEventListener('click', () => { 
-                tailAnimation.play()
-                // resets animation from previous action so it's able to play again
-                tailAnimation.reset()
-            })
-        
-            const rig = gltf.scene.children.find((child) => {
-                return child.name === 'rig'
-            })
-            const jikuMesh = rig.children[0]
-            jikuMesh.material = jikuMaterial
-        
-            const flatGrassMesh = gltf.scene.children.find((child) => {
-                return child.name === 'flatGrass'
-            })
-            flatGrassMesh.material = jikuMaterial
-        
-            const longGrassMesh = gltf.scene.children.find((child) => {
-                return child.name === 'longGrass'
-            })
-            longGrassMesh.material = jikuMaterial
-        
-            scene.add(gltf.scene)
+        // render config
+        this.renderer = new THREE.WebGLRenderer({
+            canvas: this.canvas,
+            antialias: true
         })
-    })
+        this.renderer.setSize(window.innerWidth, window.innerHeight)
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-    // Donut model
-    const donutTexture = textureLoader.load('donutBake.jpg')
-    donutTexture.flipY = false
-    donutTexture.colorSpace = THREE.SRGBColorSpace
+        // clock for delta time
+        this.clock = new THREE.Clock()
 
-    const donutMaterial = new THREE.MeshBasicMaterial({ map: donutTexture })
+        // start animation loop
+        this.renderer.setAnimationLoop(() => this.animate())
 
-    donutModelButton.addEventListener('click', () => {
-        scene.clear()
-
-        gltfLoader.load('donut.glb', (gltf) => {
-            gltf.scene.traverse((child) => {
-                child.material = donutMaterial
-            })
-        
-            scene.add(gltf.scene)
-        })
-    })
-
-    /**
-     * RENDERER
-     */
-    // render config
-    const renderer = new THREE.WebGLRenderer({
-        canvas,
-        antialias: true
-    })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-    // clock for delta time
-    const clock = new THREE.Clock()
-
-    // loop to animate and render the scene on every frame
-    const animate = () => {
-        renderer.render(scene, camera)
+        // window resize
+        window.addEventListener('resize', () => this.windowResize())
+    }
+    
+    animate() {
+        // loop to animate and render the scene on every frame
+        this.renderer.render(this.scene, this.camera)
 
         // update mixer
-        if (mixer) {
-            mixer.update(clock.getDelta())
+        if (this.mixer) {
+            this.mixer.update(this.clock.getDelta())
         }
     }
-    renderer.setAnimationLoop(animate)
-
-    // handles screen resizing
-    window.addEventListener('resize', () => {
+    
+    windowResize() {
         const width = window.innerWidth
         const height = window.innerHeight
 
         // Update camera aspect ratio
-        camera.aspect = width / height
-        camera.updateProjectionMatrix()
+        this.camera.aspect = width / height
+        this.camera.updateProjectionMatrix()
 
         // Update window size to match the new dimensions
-        renderer.setSize(width, height)
-    })
+        this.renderer.setSize(width, height)
+    }
 }
