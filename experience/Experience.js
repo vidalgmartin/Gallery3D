@@ -40,21 +40,32 @@ export class Experience {
         // clock for delta time
         this.clock = new THREE.Clock()
 
-        // start animation loop
+        // default mixer value for model animations
+        this.mixer = null
+
+        // start loop to render the scene on every frame
         this.renderer.setAnimationLoop(() => this.animate())
 
         // window resize
         window.addEventListener('resize', () => this.windowResize())
     }
+
+    setMaterial(textureImage) {
+        this.texture = this.textureLoader.load(textureImage)
+        this.texture.flipY = false
+        this.texture.colorSpace = THREE.SRGBColorSpace
+
+        this.material = new THREE.MeshBasicMaterial({ map: this.texture })
+    }
     
     animate() {
-        // loop to animate and render the scene on every frame
-        this.renderer.render(this.scene, this.camera)
-
-        // update mixer
+        // looks for mixer value for model animation
         if (this.mixer) {
             this.mixer.update(this.clock.getDelta())
         }
+
+        // renderer setup
+        this.renderer.render(this.scene, this.camera)
     }
     
     windowResize() {

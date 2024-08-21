@@ -1,43 +1,43 @@
-// default mixer value to prevent scoping issues while animating
-let mixer = null
+import * as THREE from 'three'
+import { Experience } from '../Experience'
 
-// Jiku model
-const jikuTexture = textureLoader.load('jikuBake.jpg')
-jikuTexture.flipY = false
-jikuTexture.colorSpace = THREE.SRGBColorSpace
+const animationButton = document.getElementById('animation-btn')
 
-const jikuMaterial = new THREE.MeshBasicMaterial({ map: jikuTexture })
+export class Jiku extends Experience {
+    constructor(canvas) {
+        super(canvas)
 
-jikuModelButton.addEventListener('click', () => {
-    scene.clear()
+        this.setMaterial('jikuBake.jpg')
 
-    gltfLoader.load('jiku.glb', (gltf) => {
-        mixer = new THREE.AnimationMixer(gltf.scene)
-        const tailAnimation = mixer.clipAction(gltf.animations[0])
-        tailAnimation.repetitions = 3
-    
-        animationButton.addEventListener('click', () => { 
-            tailAnimation.play()
-            // resets animation from previous action so it's able to play again
-            tailAnimation.reset()
+        this.gltfLoader.load('jiku.glb', (gltf) => {
+            // updateds mixer value from the experience
+            this.mixer = new THREE.AnimationMixer(gltf.scene)
+
+            let tailAnimation = this.mixer.clipAction(gltf.animations[0])
+            tailAnimation.repetitions = 3
+        
+            animationButton.addEventListener('click', () => { 
+                tailAnimation.play()
+                // resets animation from previous action so it's able to play again
+                tailAnimation.reset()
+            })
+        
+            let rig = gltf.scene.children.find((child) => {
+                return child.name === 'rig'
+            })
+            rig.children[0].material = this.material
+        
+            let flatGrassMesh = gltf.scene.children.find((child) => {
+                return child.name === 'flatGrass'
+            })
+            flatGrassMesh.material = this.material
+        
+            let longGrassMesh = gltf.scene.children.find((child) => {
+                return child.name === 'longGrass'
+            })
+            longGrassMesh.material = this.material
+        
+            this.scene.add(gltf.scene)
         })
-    
-        const rig = gltf.scene.children.find((child) => {
-            return child.name === 'rig'
-        })
-        const jikuMesh = rig.children[0]
-        jikuMesh.material = jikuMaterial
-    
-        const flatGrassMesh = gltf.scene.children.find((child) => {
-            return child.name === 'flatGrass'
-        })
-        flatGrassMesh.material = jikuMaterial
-    
-        const longGrassMesh = gltf.scene.children.find((child) => {
-            return child.name === 'longGrass'
-        })
-        longGrassMesh.material = jikuMaterial
-    
-        scene.add(gltf.scene)
-    })
-})
+    }
+}

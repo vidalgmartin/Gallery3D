@@ -1,20 +1,15 @@
-import * as THREE from 'three'
 import { Experience } from '../Experience'
 
 // Donut model
 export class Donut extends Experience {
-    constructor(canvas) {    
+    constructor(canvas) { 
         super(canvas)
 
-        let texture = this.textureLoader.load('donutBake.jpg')
-        texture.flipY = false
-        texture.colorSpace = THREE.SRGBColorSpace
-
-        let material = new THREE.MeshBasicMaterial({ map: texture })
+        this.setMaterial('donutBake.jpg')
 
         this.gltfLoader.load('donut.glb', (gltf) => {
             gltf.scene.traverse((child) => {
-                child.material = material
+                child.material = this.material
             })
 
             this.scene.add(gltf.scene)
