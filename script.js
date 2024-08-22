@@ -7,17 +7,6 @@ const collectionButton = document.getElementById('collection-btn')
 const donutModelButton = document.getElementById('donut-model')
 const jikuModelButton = document.getElementById('jiku-model')
 
-// initialize experience
-new Experience(canvas)
-
-donutModelButton.addEventListener('click', () => {
-    new Donut(canvas)
-})
- 
-jikuModelButton.addEventListener('click', () => {
-    new Jiku(canvas)
-})
-
 // Ensures that the page starts at the top on refresh.
 window.onbeforeunload = () => {
     window.scrollTo(0, 0)
@@ -26,4 +15,21 @@ window.onbeforeunload = () => {
 // smooth scroll into experience view
 collectionButton.addEventListener('click', () => {
     canvas.scrollIntoView({ behavior: 'smooth' })
+})
+
+// initialize experience
+let experience = new Experience(canvas)
+
+donutModelButton.addEventListener('click', () => {
+    if (experience) {
+        experience.destroy()
+    }
+    experience = new Donut(canvas)
+})
+ 
+jikuModelButton.addEventListener('click', () => {
+    if (experience) {
+        experience.destroy()
+    }
+    experience = new Jiku(canvas)
 })

@@ -51,11 +51,24 @@ export class Experience {
     }
 
     setMaterial(textureImage) {
+        // dispose of old textures and materials if they exist
+        if (this.texture) {
+            this.texture.dispose()
+        }
+        if (this.material) {
+            this.material.dispose()
+        }
+
         this.texture = this.textureLoader.load(textureImage)
         this.texture.flipY = false
         this.texture.colorSpace = THREE.SRGBColorSpace
 
         this.material = new THREE.MeshBasicMaterial({ map: this.texture })
+    }
+
+    destroy() {
+        // frees up all GPU resources created during render
+        this.renderer.dispose()
     }
     
     animate() {
