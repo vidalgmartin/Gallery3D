@@ -7,6 +7,8 @@ export class Jiku extends Experience {
     constructor(canvas) {
         super(canvas)
 
+        this.camera.cameraInstance.position.set(0, 2, 6)
+        this.scene.position.set(0, -1, 0)
         this.setMaterial('jikuBake.jpg')
 
         this.gltfLoader.load('jiku.glb', (gltf) => {

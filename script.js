@@ -8,9 +8,9 @@ const donutModelButton = document.getElementById('donut-model')
 const jikuModelButton = document.getElementById('jiku-model')
 
 // Ensures that the page starts at the top on refresh.
-window.onbeforeunload = () => {
-    window.scrollTo(0, 0)
-}
+// window.onbeforeunload = () => {
+//     window.scrollTo(0, 0)
+// }
 
 // smooth scroll into experience view
 collectionButton.addEventListener('click', () => {

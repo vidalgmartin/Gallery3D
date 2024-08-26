@@ -1,24 +1,14 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { Camera } from './Camera'
 
 export class Experience {
     constructor(canvas) {
         // scene setup & utils
         this.canvas = canvas
-
         this.scene = new THREE.Scene()
-        this.scene.position.set(0, -1, 0)
-
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-        this.camera.position.set(1.5, 2, 5)
-
-        this.controls = new OrbitControls(this.camera, this.canvas)
-        this.controls.enablePan = false
-        this.controls.maxPolarAngle = 1.5
-        this.controls.maxDistance = 8
-        this.controls.minDistance = 5
+        this.camera = new Camera(this.canvas, this.scene)
 
         // loaders
         this.textureLoader = new THREE.TextureLoader()
@@ -78,18 +68,17 @@ export class Experience {
         }
 
         // renderer setup
-        this.renderer.render(this.scene, this.camera)
+        this.renderer.render(this.scene, this.camera.cameraInstance)
+
+        // orbit controls update
+        this.camera.updateOrbitControls()
     }
     
     windowResize() {
-        const width = window.innerWidth
-        const height = window.innerHeight
-
         // Update camera aspect ratio
-        this.camera.aspect = width / height
-        this.camera.updateProjectionMatrix()
+        this.camera.cameraResize()
 
         // Update window size to match the new dimensions
-        this.renderer.setSize(width, height)
+        this.renderer.setSize(window.innerWidth, window.innerHeight)
     }
 }
