@@ -1,8 +1,7 @@
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { Camera } from './Camera'
 import { Renderer } from './Renderer'
+import { Loaders } from './resources/Loaders'
 
 export class Experience {
     constructor(canvas) {
@@ -11,23 +10,7 @@ export class Experience {
         this.scene = new THREE.Scene()
         this.camera = new Camera(this.canvas, this.scene)
         this.renderer = new Renderer(this.canvas, this.scene)
-
-        // loaders
-        this.textureLoader = new THREE.TextureLoader()
-
-        this.dracoLoader = new DRACOLoader()
-        this.dracoLoader.setDecoderPath('draco/')
-
-        this.gltfLoader = new GLTFLoader()
-        this.gltfLoader.setDRACOLoader(this.dracoLoader)
-
-        // // render config
-        // this.renderer = new THREE.WebGLRenderer({
-        //     canvas: this.canvas,
-        //     antialias: true
-        // })
-        // this.renderer.setSize(window.innerWidth, window.innerHeight)
-        // this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        this.loaders = new Loaders()
 
         // clock for delta time
         this.clock = new THREE.Clock()
@@ -40,22 +23,6 @@ export class Experience {
 
         // window resize
         window.addEventListener('resize', () => this.windowResize())
-    }
-
-    setMaterial(textureImage) {
-        // dispose of old textures and materials if they exist
-        if (this.texture) {
-            this.texture.dispose()
-        }
-        if (this.material) {
-            this.material.dispose()
-        }
-
-        this.texture = this.textureLoader.load(textureImage)
-        this.texture.flipY = false
-        this.texture.colorSpace = THREE.SRGBColorSpace
-
-        this.material = new THREE.MeshBasicMaterial({ map: this.texture })
     }
     
     update() {

@@ -15,6 +15,7 @@ export class Renderer {
         })
         this.rendererInstance.setSize(window.innerWidth, window.innerHeight)
         this.rendererInstance.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        this.rendererInstance.setClearColor('#221f22')
     }
 
     renderInstance(camera) {

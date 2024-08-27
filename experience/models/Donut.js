@@ -6,11 +6,11 @@ export class Donut extends Experience {
         super(canvas)
 
         this.camera.cameraInstance.position.set(0, 1, 2)
-        this.setMaterial('donutBake.jpg')
+        this.loaders.setMaterial('donutBake.jpg')
 
-        this.gltfLoader.load('donut.glb', (gltf) => {
+        this.loaders.gltfLoader.load('donut.glb', (gltf) => {
             gltf.scene.traverse((child) => {
-                child.material = this.material
+                child.material = this.loaders.material
             })
 
             this.scene.add(gltf.scene)

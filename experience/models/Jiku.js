@@ -9,9 +9,9 @@ export class Jiku extends Experience {
 
         this.camera.cameraInstance.position.set(2, 3, 6)
         this.scene.position.set(0, -1, 0)
-        this.setMaterial('jikuBake.jpg')
+        this.loaders.setMaterial('jikuBake.jpg')
 
-        this.gltfLoader.load('jiku.glb', (gltf) => {
+        this.loaders.gltfLoader.load('jiku.glb', (gltf) => {
             // updateds mixer value from the experience
             this.mixer = new THREE.AnimationMixer(gltf.scene)
 
@@ -27,17 +27,17 @@ export class Jiku extends Experience {
             let rig = gltf.scene.children.find((child) => {
                 return child.name === 'rig'
             })
-            rig.children[0].material = this.material
+            rig.children[0].material = this.loaders.material
         
             let flatGrassMesh = gltf.scene.children.find((child) => {
                 return child.name === 'flatGrass'
             })
-            flatGrassMesh.material = this.material
+            flatGrassMesh.material = this.loaders.material
         
             let longGrassMesh = gltf.scene.children.find((child) => {
                 return child.name === 'longGrass'
             })
-            longGrassMesh.material = this.material
+            longGrassMesh.material = this.loaders.material
         
             this.scene.add(gltf.scene)
         })
