@@ -15,17 +15,17 @@ export class Camera{
         this.scene.add(this.cameraInstance)
     }
 
+    cameraResize() {
+        this.cameraInstance.aspect = window.innerWidth / window.innerHeight
+        this.cameraInstance.updateProjectionMatrix()
+    }
+
     setOrbitControls() {
         this.controls = new OrbitControls(this.cameraInstance, this.canvas)
         this.controls.enablePan = false
         this.controls.maxPolarAngle = 1.5
         this.controls.maxDistance = 8
         this.controls.minDistance = 4
-    }
-
-    cameraResize() {
-        this.cameraInstance.aspect = window.innerWidth / window.innerHeight
-        this.cameraInstance.updateProjectionMatrix()
     }
 
     updateOrbitControls() {

@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { Camera } from './Camera'
+import { Renderer } from './Renderer'
 
 export class Experience {
     constructor(canvas) {
@@ -9,6 +10,7 @@ export class Experience {
         this.canvas = canvas
         this.scene = new THREE.Scene()
         this.camera = new Camera(this.canvas, this.scene)
+        this.renderer = new Renderer(this.canvas, this.scene)
 
         // loaders
         this.textureLoader = new THREE.TextureLoader()
@@ -19,13 +21,13 @@ export class Experience {
         this.gltfLoader = new GLTFLoader()
         this.gltfLoader.setDRACOLoader(this.dracoLoader)
 
-        // render config
-        this.renderer = new THREE.WebGLRenderer({
-            canvas: this.canvas,
-            antialias: true
-        })
-        this.renderer.setSize(window.innerWidth, window.innerHeight)
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        // // render config
+        // this.renderer = new THREE.WebGLRenderer({
+        //     canvas: this.canvas,
+        //     antialias: true
+        // })
+        // this.renderer.setSize(window.innerWidth, window.innerHeight)
+        // this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
         // clock for delta time
         this.clock = new THREE.Clock()
@@ -34,7 +36,7 @@ export class Experience {
         this.mixer = null
 
         // start loop to render the scene on every frame
-        this.renderer.setAnimationLoop(() => this.animate())
+        this.renderer.rendererInstance.setAnimationLoop(() => this.update())
 
         // window resize
         window.addEventListener('resize', () => this.windowResize())
@@ -55,23 +57,23 @@ export class Experience {
 
         this.material = new THREE.MeshBasicMaterial({ map: this.texture })
     }
-
-    destroy() {
-        // frees up all GPU resources created during render
-        this.renderer.dispose()
-    }
     
-    animate() {
+    update() {
         // looks for mixer value for model animation
         if (this.mixer) {
             this.mixer.update(this.clock.getDelta())
         }
 
-        // renderer setup
-        this.renderer.render(this.scene, this.camera.cameraInstance)
+        // renderer update
+        this.renderer.renderInstance(this.camera.cameraInstance)
 
         // orbit controls update
         this.camera.updateOrbitControls()
+    }
+
+    destroy() {
+        // frees up all GPU resources created during render
+        this.renderer.rendererInstance.dispose()
     }
     
     windowResize() {
@@ -79,6 +81,6 @@ export class Experience {
         this.camera.cameraResize()
 
         // Update window size to match the new dimensions
-        this.renderer.setSize(window.innerWidth, window.innerHeight)
+        this.renderer.rendererResize()
     }
 }
