@@ -19,7 +19,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid red;
     color: white;
 }
 
@@ -42,26 +41,83 @@
 }
 
 .experience-interface-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     position: absolute;
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
-    padding: 40px;
+    padding: 40px 40px 0 40px;
+    color: white;
 }
 
-.empty-container {
-    height: 80%;
-    border: 1px solid red;
+.logo {
+    min-width: 32px;
 }
 
 .models-list-container {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    height: 20%;
-    border: 1px solid red;
+    min-width: 128px;
+}
+
+.models-list-container h3{
+    margin-bottom: 8px;
+}
+
+.models-list {
+    margin-bottom: 4px;
+}
+
+.model-button {
+    width: 128px;
+    height: 32px;
+    cursor: pointer;
+    color: white;
+    border: 1px solid rgb(218, 218, 218);
+    background-color: transparent;
+}
+
+.model-button:hover {
+    color: black;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.animation-button {
+    width: 128px;
+    height: 32px;
+    color: gray;
+    border: 1px solid gray;
+    background-color: transparent;
+}
+
+.has-animation {
+    cursor: pointer;
+    color: white;
+    border: 1px solid white;
+}
+
+.has-animation:hover {
+    color: black;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.is-active {
+    color: black;
+    background-color: white;
+    border-radius: 4px;
 }
 
 #description-btn {
-    border: 1px solid red;
+    min-width: 32px;
+    height: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 16px;
+    border: none;
+    background-color: white;
 }

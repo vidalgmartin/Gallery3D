@@ -3,6 +3,8 @@ import { Camera } from './Camera'
 import { Renderer } from './Renderer'
 import { Loaders } from './resources/Loaders'
 
+let animationButton = document.getElementById('animation-btn')
+
 export class Experience {
     constructor(canvas) {
         // scene setup & utils
@@ -41,6 +43,14 @@ export class Experience {
     destroy() {
         // frees up all GPU resources created during render
         this.renderer.rendererInstance.dispose()
+    }
+
+    isAnimated() {
+        animationButton.classList.add('has-animation')
+    }
+
+    isNotAnimated() {
+        animationButton.classList.remove('has-animation')
     }
     
     windowResize() {

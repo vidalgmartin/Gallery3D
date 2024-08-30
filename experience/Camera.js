@@ -25,7 +25,7 @@ export class Camera{
         this.controls.enablePan = false
         this.controls.maxPolarAngle = 1.5
         this.controls.maxDistance = 8
-        this.controls.minDistance = 4
+        this.controls.minDistance = 5
     }
 
     updateOrbitControls() {
