@@ -7,8 +7,8 @@ export class Jiku extends Experience {
     constructor(canvas) {
         super(canvas)
 
-        this.camera.cameraInstance.position.set(2, 3.5, 6)
-        this.scene.position.set(0.5, -1.5, 0)
+        this.camera.cameraInstance.position.set(2, 4, 5)
+        this.scene.position.set(0, -1, 0)
         this.loaders.setMaterial('jikuBake.jpg')
         
         this.loadModel()

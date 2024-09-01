@@ -3,6 +3,7 @@ import { Donut } from './experience/models/Donut'
 import { Jiku } from './experience/models/Jiku'
 
 const canvas = document.querySelector('canvas.webgl')
+const logo = document.querySelector('.logo')
 const collectionButton = document.getElementById('collection-btn')
 const modelButtons = document.querySelectorAll('.model-button')
 const donutModelButton = document.getElementById('donut-model')
@@ -12,6 +13,11 @@ const jikuModelButton = document.getElementById('jiku-model')
 window.onbeforeunload = () => {
     window.scrollTo(0, 0)
 }
+
+// browser refresh on logo click
+logo.addEventListener('click', () => {
+    window.location.reload()
+})
 
 // smooth scroll into experience view
 collectionButton.addEventListener('click', () => {

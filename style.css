@@ -52,6 +52,7 @@
 }
 
 .logo {
+    cursor: pointer;
     min-width: 32px;
 }
 
@@ -89,8 +90,8 @@
 .animation-button {
     width: 128px;
     height: 32px;
-    color: gray;
-    border: 1px solid gray;
+    color: rgb(92, 92, 92, 0.5);
+    border: 1px solid rgb(92, 92, 92, 0.5);
     background-color: transparent;
 }
 
