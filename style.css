@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --background-color: #221f22;
+    --background-color: #221f1f;
     --font-color: rgb(255, 255, 255);
     --button-color: rgb(255, 255, 255);
 }
@@ -28,7 +28,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: 900px;
+    max-width: 800px;
     color: var(--font-color);
 }
 
@@ -47,22 +47,21 @@
 #collection-btn {
     width: 192px;
     height: 48px;
+    font-size: 1rem;
     cursor: pointer;
-    color: var(--button-color);
-    border: 2px solid var(--button-color);
-    background-color: transparent;
-    transition: all 0.3s;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--button-color);
 }
 
 #collection-btn:hover {
-    color: black;
-    background-color: var(--button-color);
-    border-radius: 8px;
+    background-color: rgb(219, 219, 219);
 }
 
 .experience {
     width: 100vw;
     height: 100vh;
+    background-color: var(--background-color);
 }
 
 .experience-interface-container {
@@ -138,12 +137,16 @@
     border-radius: 4px;
 }
 
-#description-btn {
-    min-width: 32px;
+.description-btn {
+    width: 32px;
     height: 32px;
-    font-weight: bold;
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 16px;
-    border: none;
-    background-color: white;
+    border: 2px solid var(--button-color);
+    background-color: transparent;
+}
+
+.activeToggle {
+    background-color: var(--button-color);
+    transition: background-color 0.3s;
 }

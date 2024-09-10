@@ -4,7 +4,7 @@ export class Donut extends Experience {
     constructor(canvas) { 
         super(canvas)
 
-        this.camera.cameraInstance.position.set(1, 2, 3)
+        this.camera.cameraInstance.position.set(1, 2, 2)
         this.scene.position.set(0, -0.5, 0)
         this.camera.controls.minDistance = 2.5
         this.loaders.setMaterial('donutBake.jpg')
@@ -18,6 +18,7 @@ export class Donut extends Experience {
             gltf.scene.traverse((child) => child.material = this.loaders.material)
             
             this.scene.add(gltf.scene)
+            this.model = gltf.scene
         })
     }
 }

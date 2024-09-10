@@ -1,9 +1,9 @@
-import { Experience } from './experience/Experience'
 import { Donut } from './experience/models/Donut'
 import { Jiku } from './experience/models/Jiku'
 
 const canvas = document.querySelector('canvas.webgl')
 const logo = document.querySelector('.logo')
+const rotationToggle = document.querySelector('.description-btn')
 const collectionButton = document.getElementById('collection-btn')
 const modelButtons = document.querySelectorAll('.model-button')
 const donutModelButton = document.getElementById('donut-model')
@@ -24,6 +24,7 @@ collectionButton.addEventListener('click', () => {
     canvas.scrollIntoView({ behavior: 'smooth' })
 })
 
+// experience model buttons
 modelButtons.forEach(modelBtn => {
     modelBtn.addEventListener('click', () => {
         // loop through the nodeList again to remove the class from all the buttons
@@ -34,10 +35,12 @@ modelButtons.forEach(modelBtn => {
     })
 })
 
-// initialize experience
-let experience = new Experience(canvas)
+// default experience value to avoid rendering in home page
+let experience = null
 
 donutModelButton.addEventListener('click', () => {
+    rotationToggle.classList.remove('activeToggle')
+
     if (experience) {
         experience.destroy()
     }
@@ -45,6 +48,8 @@ donutModelButton.addEventListener('click', () => {
 })
  
 jikuModelButton.addEventListener('click', () => {
+    rotationToggle.classList.remove('activeToggle')
+    
     if (experience) {
         experience.destroy()
     }

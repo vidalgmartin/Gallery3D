@@ -4,6 +4,7 @@ import { Renderer } from './Renderer'
 import { Loaders } from './resources/Loaders'
 
 let animationButton = document.getElementById('animation-btn')
+let rotationToggle = document.querySelector('.description-btn')
 
 export class Experience {
     constructor(canvas) {
@@ -13,15 +14,16 @@ export class Experience {
         this.camera = new Camera(this.canvas, this.scene)
         this.renderer = new Renderer(this.canvas, this.scene)
         this.loaders = new Loaders()
-
-        // clock for delta time
         this.clock = new THREE.Clock()
-
-        // default mixer value for model animations
         this.mixer = null
+        this.model = null
+        this.rotation = true
 
         // start loop to render the scene on every frame
         this.renderer.rendererInstance.setAnimationLoop(() => this.update())
+
+        // model default rotation
+        rotationToggle.addEventListener('click', () => this.toggleRotation())
 
         // window resize
         window.addEventListener('resize', () => this.windowResize())
@@ -38,11 +40,17 @@ export class Experience {
 
         // orbit controls update
         this.camera.updateOrbitControls()
+
+        // default model rotation
+        this.defaultRotation()
     }
 
     destroy() {
         // frees up all GPU resources created during render
         this.renderer.rendererInstance.dispose()
+
+        // dispose orbit controls
+        this.camera.controls.dispose()
     }
 
     isAnimated() {
@@ -51,6 +59,22 @@ export class Experience {
 
     isNotAnimated() {
         animationButton.classList.remove('has-animation')
+    }
+
+    toggleRotation() {
+        this.rotation = !this.rotation
+
+        if (this.rotation) {
+            rotationToggle.classList.remove('activeToggle')
+            return
+        }
+        rotationToggle.classList.add('activeToggle')
+    }
+
+    defaultRotation() {
+        if (this.model && this.rotation) {
+            this.model.rotation.y += 0.002
+        }
     }
     
     windowResize() {
