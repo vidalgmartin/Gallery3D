@@ -3,7 +3,7 @@ import { Jiku } from './experience/models/Jiku'
 
 const canvas = document.querySelector('canvas.webgl')
 const logo = document.querySelector('.logo')
-const rotationToggle = document.querySelector('.description-btn')
+const rotationToggle = document.querySelector('.rotation-btn')
 const collectionButton = document.getElementById('collection-btn')
 const modelButtons = document.querySelectorAll('.model-button')
 const donutModelButton = document.getElementById('donut-model')
@@ -24,34 +24,31 @@ collectionButton.addEventListener('click', () => {
     canvas.scrollIntoView({ behavior: 'smooth' })
 })
 
-// experience model buttons
-modelButtons.forEach(modelBtn => {
-    modelBtn.addEventListener('click', () => {
-        // loop through the nodeList again to remove the class from all the buttons
-        modelButtons.forEach(button => button.classList.remove('is-active'))
-
-        // then re-add the class only to that specific button
-        modelBtn.classList.add('is-active')
-    })
-})
-
 // default experience value to avoid rendering in home page
 let experience = null
 
-donutModelButton.addEventListener('click', () => {
-    rotationToggle.classList.remove('activeToggle')
+// experience model buttons
+modelButtons.forEach(modelBtn => {
+    modelBtn.addEventListener('click', () => {
+        // dispose of resources before creating new ones
+        if (experience) {
+            experience.destroy()
+        }
+        
+        // loop through the nodeList again to remove the class from all the buttons
+        // then re-add the class only to that specific button
+        modelButtons.forEach(button => button.classList.remove('is-active'))
+        modelBtn.classList.add('is-active')
 
-    if (experience) {
-        experience.destroy()
-    }
-    experience = new Donut(canvas)
-})
- 
-jikuModelButton.addEventListener('click', () => {
-    rotationToggle.classList.remove('activeToggle')
-    
-    if (experience) {
-        experience.destroy()
-    }
-    experience = new Jiku(canvas)
+        //remove class from button used to toggle the default rotation animation
+        rotationToggle.classList.remove('rotation-toggle')
+
+        // experience initializers by model
+        if (modelBtn === donutModelButton) {
+            experience = new Donut(canvas)
+        }
+        if (modelBtn === jikuModelButton) {
+            experience = new Jiku(canvas)
+        }
+    })
 })

@@ -4,7 +4,7 @@ import { Renderer } from './Renderer'
 import { Loaders } from './resources/Loaders'
 
 let animationButton = document.getElementById('animation-btn')
-let rotationToggle = document.querySelector('.description-btn')
+let rotationToggle = document.querySelector('.rotation-btn')
 
 export class Experience {
     constructor(canvas) {
@@ -65,10 +65,10 @@ export class Experience {
         this.rotation = !this.rotation
 
         if (this.rotation) {
-            rotationToggle.classList.remove('activeToggle')
+            rotationToggle.classList.remove('rotation-toggle')
             return
         }
-        rotationToggle.classList.add('activeToggle')
+        rotationToggle.classList.add('rotation-toggle')
     }
 
     defaultRotation() {
