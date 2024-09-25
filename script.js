@@ -43,6 +43,8 @@ modelButtons.forEach(modelBtn => {
         //remove class from button used to toggle the default rotation animation
         rotationToggle.classList.remove('rotation-toggle')
 
+        rotationToggle.classList.add('show-rotation-btn')
+
         // experience initializers by model
         if (modelBtn === donutModelButton) {
             experience = new Donut(canvas)

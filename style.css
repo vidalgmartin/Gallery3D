@@ -132,12 +132,6 @@
     border-radius: 4px;
 }
 
-.is-active {
-    color: black;
-    background-color: var(--button-color);
-    border-radius: 4px;
-}
-
 .rotation-btn {
     min-width: 32px;
     height: 32px;
@@ -145,9 +139,20 @@
     cursor: pointer;
     border: 2px solid var(--button-color);
     background-color: transparent;
+    opacity: 0.0;
+}
+
+.show-rotation-btn {
+    opacity: 1.0;
 }
 
 .rotation-toggle {
     background-color: var(--button-color);
     transition: background-color 0.3s;
+}
+
+.is-active {
+    color: black;
+    background-color: var(--button-color);
+    border-radius: 4px;
 }
